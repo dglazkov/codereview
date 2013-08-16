@@ -241,12 +241,12 @@
       * { display: block; }
     }
     @-webkit-keyframes slide-in {
-       0%   { width: 50%; }
-       100% { width: 0%; }
+       0%   { -webkit-transform: translateX(100%); }
+       100% { -webkit-transform: translateX(0); }
     }
     @-webkit-keyframes slide-out {
-       0%   { width: 0%; }
-       100% { width: 50%; }
+       0%   { -webkit-transform: translateX(0); }
+       100% { -webkit-transform: translateX(100%); }
     }
     .name {
       background-color: #f0f0f8;
@@ -258,23 +258,19 @@
     .group {
       display: flex;
     }
-    .left, .middle, .right {
-      -webkit-transform: translateZ(0);
-    }
-    #diff.animating:not(.unified) .middle {
+    #diff.animating:not(.unified) .right {
       -webkit-animation-name: slide-in;
-      -webkit-animation-duration: 0.1s;
+      -webkit-animation-duration: 10s;
       -webkit-animation-timing-function: ease-in-out;
-      width: 0%;
+      -webkit-transform: translateX(0);
     }
-    #diff.animating.unified .middle {
+    #diff.animating.unified .right {
       -webkit-animation-name: slide-out;
-      -webkit-animation-duration: 0.1s;
+      -webkit-animation-duration: 10s;
       -webkit-animation-timing-function: ease-in-out;
-      width: 50%;
+      -webkit-transform: translateX(100%);
     }
     #diff.animating .left,
-    #diff.animating .middle,
     #diff.animating .right {
       flex-shrink: 0;
       width: 50%;
@@ -283,9 +279,6 @@
     #diff:not(.unified) .right {
       flex-shrink: 0;
       width: 50%;
-    }
-    #diff:not(.animating) .middle {
-      display: none;
     }
     #diff.animating .left  .add,
     #diff.animating .right .remove {
@@ -298,7 +291,6 @@
     #diff:not(.animating).unified .left {
       flex: 1;
     }
-    #diff:not(.animating).unified .middle,
     #diff:not(.animating).unified .right {
       display: none;
     }
@@ -333,7 +325,6 @@
               --></div>
               </template>
             </div>
-            <div class="middle"></div>
             <div class="right">
               <template repeat="{{ line in group }}">
                 <div class="line {{ line.type }}"><!--
