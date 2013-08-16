@@ -13,7 +13,7 @@
             on-polymer-response="diffLoadSucceeded">
         </polymer-ajax>
         <button on-click="toggleIt">bbb</button>
-        <rietveld-diffview id="diff2" diff="{{ diff }}" mode="unified"></rietveld-diffview>
+        <rietveld-diffview id="diff2" diff="{{ diff }}" mode="side-by-side"></rietveld-diffview>
       </template>
       <script>
       Polymer('rietveld-test-diffviewer', {

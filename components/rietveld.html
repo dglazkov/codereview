@@ -145,7 +145,7 @@
               <div class="polymer-ui-collapsible-header">{{ changelist.message ? changelist.message : 'Patch' }}</div>
               <div class="content" on-tap="stopPropagation">
                 <rietveld-patchset server="{{ server }}" issue="{{ number }}" patchset="{{ changelist.patchset }}"
-                                   diffmode="{{ diffmode ? 'side-by-side' : 'unified' }}"></rietveld-patchset>
+                                   diffmode="{{ diffmode ? 'unified' : 'side-by-side' }}"></rietveld-patchset>
               </div>
             </polymer-ui-collapsible>
           </template>
@@ -223,7 +223,7 @@
     server: '',
     issue: '',
     patchset: '',
-    diffmode: 'unified',
+    diffmode: '',
     diff: null,
     diffLoadSucceeded: function(event) {
       this.diff = event.detail.response;
@@ -321,7 +321,7 @@
       background-color: #f8f8ff;
     }
     </style>
-    <div id="diff" class="unified" on-webkitAnimationEnd="onAnimationEnd">
+    <div id="diff" on-webkitAnimationEnd="onAnimationEnd">
       <template repeat="{{ file in data }}">
         <div class="name text">{{ file.name }}</div>
         <template repeat="{{ group in file.groups }}">
@@ -350,14 +350,13 @@
   Polymer('rietveld-diffview', {
     diff: null,
     data: null,
-    mode: 'unified',
-    animateFutureModeChanges: false,
+    mode: '',
 
     onAnimationEnd: function() {
       this.$.diff.classList.remove('animating');
     },
 
-    modeChanged: function() {
+    modeChanged: function(oldValue) {
       var classList = this.$.diff.classList;
 
       if (this.mode == 'side-by-side')
@@ -365,9 +364,8 @@
       else
         classList.add('unified');
 
-      if (this.animateFutureModeChanges)
+      if (oldValue)
         classList.add('animating');
-      this.animateFutureModeChanges = true;
     },
 
     diffChanged: function() {
