@@ -512,7 +512,8 @@
       var bugs = chunk.split('=')[1].split(',');
       chunks.push({is_link: false, text: "BUG="});
       bugs.forEach(function(bug) {
-        chunks.push({is_link: true, text: bug, href: "http://code.google.com/p/chromium/issues/detail?id=" + bug});
+        var trimmedBug = bug.replace(/\s/g, '')
+        chunks.push({is_link: true, text: trimmedBug, href: "http://code.google.com/p/chromium/issues/detail?id=" + trimmedBug});
       });
       currentIndex = index + chunk.length;
     });
