@@ -476,7 +476,7 @@
   function chunkText(text) {
     var chunks = [];
     // FIXME: Do something less crude to identify URLs and email addresses.
-    var match = text.match(/([A-Za-z.@:/]+\.(org|com)[A-Za-z\d.@:/?=&#%_]*)/g);
+    var match = text.match(/([A-Za-z\d.@:/_-]+\.(org|com)[A-Za-z\d.@:/?=&#%_-]*)/g);
     if (!match) {
       chunks.push({is_link: false, text: text});
       return chunks;
