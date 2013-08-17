@@ -10,16 +10,16 @@ index a5df3e1550f4d867b59bc540180127f51e668d75..294a9beb3f2bdbe3183fb23a9b381918
 -    return targetDPI > 0 ? (deviceScaleFactor * 120.0f) / targetDPI : 1.0f;
 +    return targetDPI > 0 ? 160.0f / targetDPI : 1.0f;
  }
- 
+
  static float getLayoutWidthForNonWideViewport(const FloatSize& deviceSize, float initialScale)
 Index: Source/web/tests/WebFrameTest.cpp
 diff --git a/Source/web/tests/WebFrameTest.cpp b/Source/web/tests/WebFrameTest.cpp
 index 168fb2c211f73d4eaaa5aa753a240a0389cdaba4..a097e3e0187480724f50510d9d28591da4cf3732 100644
 --- a/Source/web/tests/WebFrameTest.cpp
 +++ b/Source/web/tests/WebFrameTest.cpp
-@@ -866,20 +866,33 @@ TEST_F(WebFrameTest, targetDensityDpiHigh)
+@@ -866,20 +866,33 @@
      registerMockedHttpURLLoad("viewport-target-densitydpi-high.html");
- 
+
      FixedLayoutTestWebViewClient client;
 -    client.m_screenInfo.deviceScaleFactor = 4.0f / 3.0f;
 +    // high-dpi = 240
@@ -27,7 +27,7 @@ index 168fb2c211f73d4eaaa5aa753a240a0389cdaba4..a097e3e0187480724f50510d9d28591d
 +    float deviceScaleFactors[] = { 1.0f, 4.0f / 3.0f, 2.0f };
      int viewportWidth = 640;
      int viewportHeight = 480;
- 
+
 -    m_webView = FrameTestHelpers::createWebViewAndLoad(m_baseURL + "viewport-target-densitydpi-high.html", true, 0, &client);
 -    m_webView->enableFixedLayoutMode(true);
 -    m_webView->settings()->setViewportEnabled(true);
@@ -37,7 +37,7 @@ index 168fb2c211f73d4eaaa5aa753a240a0389cdaba4..a097e3e0187480724f50510d9d28591d
 +        float deviceScaleFactor = deviceScaleFactors[i];
 +        float deviceDpi = deviceScaleFactor * 160.0f;
 +        client.m_screenInfo.deviceScaleFactor = deviceScaleFactor;
- 
+
 -    // high-dpi = 240, device-dpi = 160
 -    EXPECT_NEAR(viewportWidth * (240.0f / 160.0f), m_webView->fixedLayoutSize().width, 1.0f);
 -    EXPECT_NEAR(viewportHeight * (240.0f / 160.0f), m_webView->fixedLayoutSize().height, 1.0f);
@@ -59,5 +59,5 @@ index 168fb2c211f73d4eaaa5aa753a240a0389cdaba4..a097e3e0187480724f50510d9d28591d
 +        m_webView = 0;
 +    }
  }
- 
+
  TEST_F(WebFrameTest, targetDensityDpiDevice)

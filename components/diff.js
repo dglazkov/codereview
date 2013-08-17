@@ -29,37 +29,6 @@ var diff = (function() {
     return line;
   }
 
-  // FIXME: Parse the chunk header.
-
-  // var kChunkHeaderStart = '@@ ';
-  // var kChunkHeaderEnd = ' @@';
-
-  // function parseChunkDescriptor(descriptor) {
-  //   var pieces = descriptor.split(',');
-  //   if (pieces.length != 2)
-  //     throw 'Parse error: Expected exactly one comma: ' + descriptor;
-  //   return {
-  //     offset: parseInt(pieces[0]),
-  //     length: parseInt(pieces[1]).
-  //   }
-  // }
-
-  // function parseChunkHeader(line) {
-  //   if (!startsWith(line, kChunkHeaderStart))
-  //     throw 'Parse error: Expected "' + kChunkHeaderStart + '": ' + line;
-  //   var end = line.indexOf(kChunkHeaderEnd, kChunkHeaderStart.length);
-  //   if (end == -1)
-  //     throw 'Parse error: Missing terminating "' + kChunkHeaderEnd + '": ' + line;
-  //   var combinedDescriptor = line.slice(kChunkHeaderStart.length, end);
-  //   var descriptors = combinedDescriptor.split(' ');
-  //   if (descriptors.length != 2)
-  //     throw 'Parse error: Expected exactly one space: ' + combinedDescriptor;
-  //   return {
-  //     before: parseChunkDescriptor(descriptors[0]),
-  //     after: parseChunkDescriptor(descriptors[1]),
-  //   };
-  // }
-
   function Parser(diff) {
     this.lines = diff.split('\n');
     this.currentLine = 0;
@@ -94,7 +63,7 @@ var diff = (function() {
       };
       var lineText;
       if (groupType == 'header') {
-        var matchedHeader = this.takeLine().match(/^@@\ \-(\d+),[^+]+\+(\d+)\,\d+\ @@\ (.*)/);
+        var matchedHeader = this.takeLine().match(/^@@\ \-(\d+),[^+]+\+(\d+)\,\d+\ @@\ ?(.*)/);
         currentBeforeLineNumber = matchedHeader[1];
         currentAfterLineNumber = matchedHeader[2];
         line.beforeNumber = "@@";
