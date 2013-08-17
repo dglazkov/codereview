@@ -74,29 +74,29 @@
     .owner {
       font-style: italic;
     }
-    .description {
-    }
     .reviewers:before {
       content: "Reviewers: "
     }
     .cc:before {
       content: "CC: ";
     }
-    .message {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      margin: 5px 0;
-    }
-    .message.approved {
+    .message.approved .header,
+    .message.approved .text {
       border-color: #8d8;
     }
-    .message.disapproved {
+    .message.disapproved .header,
+    .message.disapproved .text {
       border-color: red;
     }
     .message .header {
       display: flex;
-      background-color: #ccc;
-      padding: 5px 10px;
+      background-color: #eee;
+      padding: 5px 10px 10px;
+      border: 1px solid #ccc;
+      border-bottom: 0;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      margin-top: -5px;
     }
     .message.approved .header {
       background-color: #dfd;
@@ -111,6 +111,11 @@
       padding: 10px;
       white-space: pre-wrap;
       overflow: hidden;
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+    }
+    .message:last-child {
+      border-bottom: 1px solid #ccc;
     }
     </style>
     <template if="{{ data }}">
