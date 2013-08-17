@@ -36,6 +36,9 @@
     @host {
       * { display: block; }
     }
+    .title {
+      margin-bottom: 10px;
+    }
     .issue {
       font-family: 'Helvetica Neue', Helvetica, Arial, 'open sans', sans-serif;
     }
@@ -135,8 +138,10 @@
             <polymer-ui-toggle-button onCaption="Private" offCaption="Public" value="{{ data.private }}"></polymer-ui-toggle-button>
             <polymer-ui-toggle-button onCaption="SxS" offCaption="Unified" value="{{ diffmode }}"></polymer-ui-toggle-button>
           </div>
-          <div class="subject">{{ data.subject }}</div>
-          <div class="owner">By <a class="email" href="{{ data.owner_email }}">{{ data.owner_email }}</a></div>
+          <div class="title">
+            <span class="subject">{{ data.subject }}</span>
+            <span class="owner">&lt;<a class="email" href="{{ data.owner_email }}">{{ data.owner_email }}</a>&gt;</span>
+          </div>
           <div class="description">{{ data.description }}</div>
           <div class="recipients">
             <!-- FIXME: Hook these inputs up to push data back to the server. -->
