@@ -74,11 +74,18 @@
     .owner {
       font-style: italic;
     }
-    .reviewers:before {
-      content: "Reviewers: "
+    .recipients {
+      margin: 10px 0 0;
     }
-    .cc:before {
-      content: "CC: ";
+    .reviewers,
+    .cc {
+      display: flex;
+      align-items: baseline;
+    }
+    .reviewers input,
+    .cc input {
+      flex: 1;
+      margin-left: 5px;
     }
     .message.approved .header,
     .message.approved .text {
@@ -128,18 +135,15 @@
             <polymer-ui-toggle-button onCaption="SxS" offCaption="Unified" value="{{ diffmode }}"></polymer-ui-toggle-button>
           </div>
           <div class="subject">{{ data.subject }}</div>
-          <div class="owner">By <span class="name">{{ data.owner }}</span> &lt;<span class="email">{{ data.owner_email }}</span>&gt;</div>
+          <div class="owner">By <a class="email" href="{{ data.owner_email }}">{{ data.owner_email }}</a></div>
           <div class="description">{{ data.description }}</div>
           <div class="recipients">
+            <!-- FIXME: Hook these inputs up to push data back to the server. -->
             <div class="reviewers">
-              <template repeat="{{ email in data.reviewers }}">
-                <a class="email" href={{ email }}>{{ email }}</a>
-              </template>
+              Reviewers: <input value="{{ data.reviewers }}">
             </div>
             <div class="cc">
-              <template repeat="{{ email in data.cc }}">
-                <a class="email" href={{ email }}>{{ email }}</a>
-              </template>
+              CC: <input value="{{ data.cc }}">
             </div>
           </div>
         </div>
