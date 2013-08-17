@@ -260,13 +260,13 @@
     }
     #diff.animating:not(.unified) .right {
       -webkit-animation-name: slide-in;
-      -webkit-animation-duration: 10s;
+      -webkit-animation-duration: 0.1s;
       -webkit-animation-timing-function: ease-in-out;
       -webkit-transform: translateX(0);
     }
     #diff.animating.unified .right {
       -webkit-animation-name: slide-out;
-      -webkit-animation-duration: 10s;
+      -webkit-animation-duration: 0.1s;
       -webkit-animation-timing-function: ease-in-out;
       -webkit-transform: translateX(100%);
     }
@@ -297,43 +297,74 @@
     .line {
       display: flex;
     }
+    .before,
+    .after,
     .text {
       white-space: pre-wrap;
       word-break: break-all;
       padding: 2px;
+      flex: 1;
     }
-    .add {
+    .add .text {
       background-color: #dfd;
     }
-    .remove {
+    .remove .text {
       background-color: #fdd;
     }
     .header {
       color: #999;
       background-color: #f8f8ff;
     }
+    .file-diff {
+      border: 1px solid #ccc;
+      margin: 5px 0;
+    }
+    .before,
+    .after {
+      width: 3em;
+      flex: none;
+      text-align: right;
+      border-bottom: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+      background-color: #FCFCEC;
+      align-self: flex-start;
+    }
+    #diff:not(.unified) .left  .after,
+    #diff:not(.unified) .right .before {
+      display: none;
+    }
+    #diff.unified .right .after,
+    #diff.unified .right .before {
+      display: none;
+    }
     </style>
     <div id="diff" on-webkitAnimationEnd="onAnimationEnd">
       <template repeat="{{ file in data }}">
-        <div class="name text">{{ file.name }}</div>
-        <template repeat="{{ group in file.groups }}">
-          <div class="group">
-            <div class="left">
-              <template repeat="{{ line in group }}">
-                <div class="line {{ line.type }}"><!--
-                --><div class="text">{{ line.text }}</div><!--
-              --></div>
-              </template>
+        <div class="file-diff">
+          <div class="name text">{{ file.name }}</div>
+          <template repeat="{{ group in file.groups }}">
+            <div class="group">
+              <div class="left">
+                <template repeat="{{ line in group }}">
+                  <div class="line {{ line.type }}"><!--
+                  --><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp' }}</div><!--
+                  --><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp' }}</div><!--
+                  --><div class="text">{{ line.text }}</div><!--
+                --></div>
+                </template>
+              </div>
+              <div class="right">
+                <template repeat="{{ line in group }}">
+                  <div class="line {{ line.type }}"><!--
+                  --><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp' }}</div><!--
+                  --><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp' }}</div><!--
+                  --><div class="text">{{ line.text }}</div><!--
+                --></div>
+                </template>
+              </div>
             </div>
-            <div class="right">
-              <template repeat="{{ line in group }}">
-                <div class="line {{ line.type }}"><!--
-                --><div class="text">{{ line.text }}</div><!--
-              --></div>
-              </template>
-            </div>
-          </div>
-        </template>
+          </template>
+        </div>
       </template>
     </div>
   </template>

@@ -81,11 +81,28 @@ var diff = (function() {
     var groups = [];
     var currentGroupType = null;
     var currentGroup = [];
+    var currentBeforeLineNumber = 0;
+    var currentAfterLineNumber = 0;
     while (this.haveLines()) {
       var type = classifyLine(this.peekLine());
       if (type == 'index' || type == 'empty')
         break; // We're done with this file.
       var groupType = type;
+
+      var line = {
+        type: type,
+        text: trimLine(type, this.peekLine())
+      };
+
+      if (groupType == 'header') {
+        var matchedHeader = this.peekLine().match(/^@@\ \-(\d+),[^+]+\+(\d+)/);
+        currentBeforeLineNumber = matchedHeader[1];
+        currentAfterLineNumber = matchedHeader[2];
+      } else {
+        line.beforeNumber = currentBeforeLineNumber++;
+        line.afterNumber = currentAfterLineNumber++;
+      }
+
       if (groupType == 'add' || groupType == 'remove')
         groupType = 'delta';
       if (groupType != currentGroupType) {
@@ -94,10 +111,8 @@ var diff = (function() {
         currentGroupType = groupType;
         currentGroup = [];
       }
-      currentGroup.push({
-        type: type,
-        text: trimLine(type, this.takeLine()),
-      });
+      currentGroup.push(line);
+      this.takeLine();
     }
     if (currentGroup.length)
       groups.push(currentGroup);
