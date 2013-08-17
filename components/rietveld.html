@@ -133,12 +133,12 @@
           <div class="recipients">
             <div class="reviewers">
               <template repeat="{{ email in data.reviewers }}">
-                <span class="email">{{ email }}</span>
+                <a class="email" href={{ email }}>{{ email }}</a>
               </template>
             </div>
             <div class="cc">
               <template repeat="{{ email in data.cc }}">
-                <span class="email">{{ email }}</span>
+                <a class="email" href={{ email }}>{{ email }}</a>
               </template>
             </div>
           </div>
