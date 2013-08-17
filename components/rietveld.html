@@ -39,18 +39,25 @@
     .issue {
       font-family: 'Helvetica Neue', Helvetica, Arial, 'open sans', sans-serif;
     }
-    polymer-ui-collapsible {
-      margin: 5px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
+    .patchsets {
+      margin: 20px 0;
+    }
+    .patchsets polymer-ui-collapsible {
     }
     .polymer-ui-collapsible-header {
       cursor: pointer;
     }
     .patchsets .polymer-ui-collapsible-header {
-      padding: 5px 10px;
-      border-bottom: 1px solid #bcbcbc;
-      border-radius: 5px;
+      margin-top: -5px;
+      border: 1px solid #93b7fa;
+      border-bottom: 0px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      background-color: #E5ECF9;
+      padding: 5px 10px 10px;
+    }
+    .patchsets polymer-ui-collapsible:last-child:not([active=true]) .polymer-ui-collapsible-header {
+      border-bottom: 1px solid #93b7fa;
     }
     .description {
       white-space: pre-wrap;
@@ -350,7 +357,7 @@
     }
     .file-diff {
       border: 1px solid #ccc;
-      margin: 5px 0;
+      margin: 0 0 10px;
     }
     .polymer-ui-collapsible-header {
       cursor: pointer;
