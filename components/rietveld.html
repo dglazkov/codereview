@@ -170,6 +170,32 @@
     </template>
   </template>
   <script>
+  (function() {
+
+  var MS_IN_MINUTE = 60000;
+  var MS_IN_HOUR = 60 * MS_IN_MINUTE;
+
+  function pluralize(count, unit) {
+    return count + " " + unit + (count != 1 ? "s" : "");
+  }
+
+  function humanReadableDate(date) {
+    var parsedDate = Date.parse(date + " UTC");
+    var diff = Date.now() - parsedDate;
+    if (diff > 24 * MS_IN_HOUR)
+      return new Date(parsedDate).toLocaleDateString();
+
+    var result = "";
+    if (diff > MS_IN_HOUR) {
+      var numDays = Math.floor(diff / MS_IN_HOUR);
+      result = pluralize(numDays, "hour") + ", ";
+      diff = diff % MS_IN_HOUR;
+    }
+    var numMinutes = Math.ceil(diff / MS_IN_MINUTE);
+    result += pluralize(numMinutes, "minute") + " ago";
+    return result
+  }
+
   Polymer('rietveld-issue', {
     server: '',
     number: '',
@@ -184,10 +210,16 @@
     },
     issueLoadSucceeded: function(event) {
       var response = event.detail.response;
+
       var changelists = [];
       for (var i = 0; i < response.patchsets.length; ++i)
         changelists.push({});
       this.changelists = changelists;
+
+      response.messages.forEach(function(message) {
+        message.date = humanReadableDate(message.date);
+      });
+
       this.data = response;
       this.error = '';
     },
@@ -202,6 +234,7 @@
       event.stopPropagation();
     },
   });
+  })();
   </script>
 </polymer-element>
 <polymer-element name="rietveld-patchset" attributes="server issue patchset diffmode">
