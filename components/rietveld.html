@@ -51,6 +51,7 @@
       cursor: pointer;
     }
     .patchsets .polymer-ui-collapsible-header {
+      display: flex;
       margin-top: -5px;
       border: 1px solid #93b7fa;
       border-bottom: 0px;
@@ -58,6 +59,9 @@
       border-top-right-radius: 5px;
       background-color: #E5ECF9;
       padding: 5px 10px 10px;
+    }
+    .patchsets .polymer-ui-collapsible-header .patchset-title {
+      flex: 1
     }
     .patchsets polymer-ui-collapsible:last-child:not([active=true]) .polymer-ui-collapsible-header {
       border-bottom: 1px solid #93b7fa;
@@ -164,7 +168,10 @@
           </template>
           <template repeat="{{ changelist in changelists }}">
             <polymer-ui-collapsible>
-              <div class="polymer-ui-collapsible-header">{{ changelist.message ? changelist.message : 'Patch' }}</div>
+              <div class="polymer-ui-collapsible-header">
+                <div class="patchset-title">{{ changelist.message ? changelist.message : 'Patch' }}</div>
+                <a href="https://codereview.chromium.org/download/issue{{ number }}_{{ changelist.patchset }}.diff" target="_blank" on-tap="stopPropagation">Raw diff</a>
+              </div>
               <div class="content" on-tap="stopPropagation">
                 <rietveld-patchset server="{{ server }}" issue="{{ number }}" patchset="{{ changelist.patchset }}"
                                    diffmode="{{ diffmode ? 'unified' : 'side-by-side' }}"></rietveld-patchset>
