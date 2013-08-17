@@ -466,7 +466,7 @@
 <polymer-element name="rietveld-linkified" attributes="value">
   <template><!--
     --><template repeat="{{ chunk in chunks }}"><!--
-      --><template if="{{ chunk.is_link }}"><a href="{{ chunk.text }}">{{ chunk.text }}</a></template><!--
+      --><template if="{{ chunk.is_link }}"><a href="{{ chunk.href }}">{{ chunk.text }}</a></template><!--
       --><template if="{{ !chunk.is_link }}">{{ chunk.text }}</template><!--
     --></template><!--
   --></template>
@@ -488,8 +488,8 @@
         var textBeforeLink = text.substring(currentIndex, index);
         chunks.push({is_link: false, text: textBeforeLink});
       }
+      chunks.push({is_link: true, text: chunk, href: chunk});
       currentIndex = index + chunk.length;
-      chunks.push({is_link: true, text: text.substring(index, currentIndex)});
     })
     if (currentIndex < text.length) {
       chunks.push({is_link: false, text: text.substring(currentIndex)});
@@ -497,10 +497,34 @@
     return chunks;
   }
 
+  // FIXME: This really should share some code with chunkText.
+  function chunkBugsAndText(text) {
+    var match = text.match(/(BUG=[\d, ]+)/g);
+    if (!match)
+      return chunkText(text);
+
+    var chunks = [];
+    var currentIndex = 0;
+    match.forEach(function(chunk) {
+      var index = text.indexOf(chunk, currentIndex);
+      if (index)
+        chunks = chunks.concat(chunkText(text.substring(currentIndex, index)));
+      var bugs = chunk.split('=')[1].split(',');
+      chunks.push({is_link: false, text: "BUG="});
+      bugs.forEach(function(bug) {
+        chunks.push({is_link: true, text: bug, href: "http://code.google.com/p/chromium/issues/detail?id=" + bug});
+      });
+      currentIndex = index + chunk.length;
+    });
+    if (currentIndex < text.length)
+        chunks = chunks.concat(chunkText(text.substring(currentIndex)));
+    return chunks;
+  }
+
   Polymer('rietveld-linkified', {
     chunks: null,
     valueChanged: function() {
-      this.chunks = chunkText(this.value);
+      this.chunks = chunkBugsAndText(this.value);
     },
   });
   })();
