@@ -319,6 +319,9 @@
       border: 1px solid #ccc;
       margin: 5px 0;
     }
+    .polymer-ui-collapsible-header {
+      cursor: pointer;
+    }
     .before,
     .after {
       width: 3em;
@@ -340,31 +343,33 @@
     </style>
     <div id="diff" on-webkitAnimationEnd="onAnimationEnd">
       <template repeat="{{ file in data }}">
-        <div class="file-diff">
-          <div class="name text">{{ file.name }}</div>
-          <template repeat="{{ group in file.groups }}">
-            <div class="group">
-              <div class="left">
-                <template repeat="{{ line in group }}">
-                  <div class="line {{ line.type }}"><!--
-                  --><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp' }}</div><!--
-                  --><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp' }}</div><!--
-                  --><div class="text">{{ line.text }}</div><!--
-                --></div>
-                </template>
+        <polymer-ui-collapsible class="file-diff">
+          <div class="name text polymer-ui-collapsible-header">{{ file.name }}</div>
+          <div class="content">
+            <template repeat="{{ group in file.groups }}">
+              <div class="group">
+                <div class="left">
+                  <template repeat="{{ line in group }}">
+                    <div class="line {{ line.type }}"><!--
+                    --><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp' }}</div><!--
+                    --><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp' }}</div><!--
+                    --><div class="text">{{ line.text }}</div><!--
+                  --></div>
+                  </template>
+                </div>
+                <div class="right">
+                  <template repeat="{{ line in group }}">
+                    <div class="line {{ line.type }}"><!--
+                    --><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp' }}</div><!--
+                    --><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp' }}</div><!--
+                    --><div class="text">{{ line.text }}</div><!--
+                  --></div>
+                  </template>
+                </div>
               </div>
-              <div class="right">
-                <template repeat="{{ line in group }}">
-                  <div class="line {{ line.type }}"><!--
-                  --><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp' }}</div><!--
-                  --><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp' }}</div><!--
-                  --><div class="text">{{ line.text }}</div><!--
-                --></div>
-                </template>
-              </div>
-            </div>
-          </template>
-        </div>
+            </template>
+          </div>
+        </polymer-ui-collapsible>
       </template>
     </div>
   </template>
@@ -395,7 +400,7 @@
       // This is gross, but we can't set active="true" in markup
       // https://github.com/Polymer/polymer-ui-elements/issues/11
       setTimeout(function() {
-        Array.prototype.forEach.call(this.$.diff.querySelectorAll('.file'), function(element) {
+        Array.prototype.forEach.call(this.$.diff.querySelectorAll('.file-diff'), function(element) {
           element.active = true;
         });
       }.bind(this), 0);
