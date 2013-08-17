@@ -87,20 +87,23 @@ var diff = (function() {
       var type = classifyLine(this.peekLine());
       if (type == 'index' || type == 'empty')
         break; // We're done with this file.
+
       var groupType = type;
-
       var line = {
-        type: type,
-        text: trimLine(type, this.peekLine())
+        type: type
       };
-
+      var lineText;
       if (groupType == 'header') {
-        var matchedHeader = this.peekLine().match(/^@@\ \-(\d+),[^+]+\+(\d+)/);
+        var matchedHeader = this.takeLine().match(/^@@\ \-(\d+),[^+]+\+(\d+)\,\d+\ @@\ (.*)/);
         currentBeforeLineNumber = matchedHeader[1];
         currentAfterLineNumber = matchedHeader[2];
+        line.beforeNumber = "@@";
+        line.afterNumber = "@@";
+        line.text = matchedHeader[3];
       } else {
         line.beforeNumber = currentBeforeLineNumber++;
         line.afterNumber = currentAfterLineNumber++;
+        line.text = trimLine(type, this.takeLine());
       }
 
       if (groupType == 'add' || groupType == 'remove')
@@ -112,7 +115,6 @@ var diff = (function() {
         currentGroup = [];
       }
       currentGroup.push(line);
-      this.takeLine();
     }
     if (currentGroup.length)
       groups.push(currentGroup);
