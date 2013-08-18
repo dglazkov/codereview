@@ -46,6 +46,9 @@
     .patchsets {
       margin: 20px 0;
     }
+    .patchsets .date {
+      color: grey;
+    }
     .patchsets polymer-ui-collapsible {
     }
     .polymer-ui-collapsible-header {
@@ -59,7 +62,7 @@
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       background-color: #E5ECF9;
-      padding: 5px 10px 10px;
+      padding: 5px 5px 10px;
       /* Match the builting polymer-ui-collapsible animation time. */
       -webkit-transition: padding 0.2s;
     }
@@ -67,7 +70,10 @@
       padding-bottom: 5px;
     }
     .patchsets .polymer-ui-collapsible-header .patchset-title {
-      flex: 1
+      flex: 1;
+    }
+    .patchsets .polymer-ui-collapsible-header > * {
+      margin: 0 5px;
     }
     .patchsets polymer-ui-collapsible:last-child:not([active]) .polymer-ui-collapsible-header {
       border-bottom: 1px solid #93b7fa;
@@ -207,6 +213,7 @@
             <polymer-ui-collapsible>
               <div class="polymer-ui-collapsible-header">
                 <div class="patchset-title">{{ changelist.message ? changelist.message : 'Patch' }}</div>
+                <div class="date">{{ changelist.created }}</div>
                 <a href="https://codereview.chromium.org/download/issue{{ number }}_{{ changelist.patchset }}.diff" target="_blank" on-tap="stopPropagation">Raw diff</a>
               </div>
               <div class="content" on-tap="stopPropagation">
@@ -245,10 +252,10 @@
     return count + " " + unit + (count != 1 ? "s" : "");
   }
 
-  function humanReadableDate(date) {
+  function humanReadableDate(date, minTime) {
     var parsedDate = Date.parse(date + " UTC");
     var diff = Date.now() - parsedDate;
-    if (diff > 24 * MS_IN_HOUR)
+    if (diff > minTime)
       return new Date(parsedDate).toLocaleDateString();
 
     var result = "";
@@ -271,6 +278,7 @@
     error: '',
     patchsetLoadSucceeded: function(event) {
       var response = event.detail.response;
+      response.created = humanReadableDate(response.created, MS_IN_HOUR);
       var index = this.data.patchsets.indexOf(response.patchset);
       this.changelists[index] = response;
     },
@@ -283,7 +291,7 @@
       this.changelists = changelists;
 
       response.messages.forEach(function(message) {
-        message.date = humanReadableDate(message.date);
+        message.date = humanReadableDate(message.date, 24 * MS_IN_HOUR);
       });
 
       this.data = response;
