@@ -84,8 +84,20 @@
     .controls > * {
       margin-bottom: 10px;
     }
+    .controls > :last-child {
+      margin-bottom: 0px;
+    }
+    .controls > .spacer {
+      flex: 1;
+    }
     .metadata {
       padding: 0 10px;
+    }
+    .metadata > .container {
+      display: flex;
+    }
+    .title-and-description {
+      flex: 1;
     }
     .subject{
       font-weight: bold;
@@ -152,18 +164,23 @@
     <template if="{{ data }}">
       <div class="issue">
         <div class="metadata">
-          <div class="controls">
-            <polymer-ui-toggle-button onCaption="Closed" offCaption="Open" value="{{ data.closed }}"></polymer-ui-toggle-button>
-            <polymer-ui-toggle-button onCaption="CQ+" offCaption="CQ-" value="{{ data.commit }}"></polymer-ui-toggle-button>
-            <polymer-ui-toggle-button onCaption="Private" offCaption="Public" value="{{ data.private }}"></polymer-ui-toggle-button>
-            <polymer-ui-toggle-button onCaption="Unified" offCaption="SxS" value="{{ diffmode }}"></polymer-ui-toggle-button>
-            <polymer-localstorage name="diffmode" value="{{ diffmode }}"></polymer-localstorage>
+          <div class="container">
+            <div class="title-and-description">
+              <div class="title">
+                <span class="subject">{{ data.subject }}</span>
+                <span class="owner">&lt;<a class="email" href="mailto:{{ data.owner_email }}">{{ data.owner_email }}</a>&gt;</span>
+              </div>
+              <rietveld-linkified class="description" value="{{ data.description }}"></rietveld-linkified>
+            </div>
+            <div class="controls">
+              <polymer-ui-toggle-button onCaption="Closed" offCaption="Open" value="{{ data.closed }}"></polymer-ui-toggle-button>
+              <polymer-ui-toggle-button onCaption="CQ+" offCaption="CQ-" value="{{ data.commit }}"></polymer-ui-toggle-button>
+              <polymer-ui-toggle-button onCaption="Private" offCaption="Public" value="{{ data.private }}"></polymer-ui-toggle-button>
+              <div class="spacer"></div>
+              <polymer-localstorage name="diffmode" value="{{ diffmode }}"></polymer-localstorage>
+              <polymer-ui-toggle-button onCaption="Unified" offCaption="SxS" value="{{ diffmode }}"></polymer-ui-toggle-button>
+            </div>
           </div>
-          <div class="title">
-            <span class="subject">{{ data.subject }}</span>
-            <span class="owner">&lt;<a class="email" href="mailto:{{ data.owner_email }}">{{ data.owner_email }}</a>&gt;</span>
-          </div>
-          <rietveld-linkified class="description" value="{{ data.description }}"></rietveld-linkified>
           <div class="recipients">
             <!-- FIXME: Hook these inputs up to push data back to the server. -->
             <div class="reviewers">
