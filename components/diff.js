@@ -70,9 +70,14 @@ var diff = (function() {
         line.afterNumber = "@@";
         line.text = matchedHeader[3];
       } else {
-        line.beforeNumber = currentBeforeLineNumber++;
-        line.afterNumber = currentAfterLineNumber++;
+        line.beforeNumber = currentBeforeLineNumber;
+        line.afterNumber = currentAfterLineNumber;
         line.text = trimLine(type, this.takeLine());
+
+        if (groupType == 'remove' || groupType == 'both')
+          currentBeforeLineNumber++;
+        if (groupType == 'add' || groupType == 'both')
+          currentAfterLineNumber++;
       }
 
       if (groupType == 'add' || groupType == 'remove')
