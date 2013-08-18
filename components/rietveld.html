@@ -56,6 +56,7 @@
     }
     .patchsets .polymer-ui-collapsible-header {
       display: flex;
+      flex-wrap: wrap;
       margin-top: -5px;
       border: 1px solid #93b7fa;
       border-bottom: 0px;
@@ -71,9 +72,11 @@
     }
     .patchsets .polymer-ui-collapsible-header .patchset-title {
       flex: 1;
+      min-width: -webkit-min-content;
     }
     .patchsets .polymer-ui-collapsible-header > * {
       margin: 0 5px;
+      flex: none;
     }
     .patchsets polymer-ui-collapsible:last-child:not([active]) .polymer-ui-collapsible-header {
       border-bottom: 1px solid #93b7fa;
@@ -126,10 +129,15 @@
       flex: 1;
       margin: 0 0 0 5px;
     }
+    .tryresult.result0,
     .message.approved .header,
     .message.approved .text {
       border-color: #8d8;
     }
+    .tryresult.result1 {
+      background-color: orange;
+    }
+    .tryresult.result2,
     .message.disapproved .header,
     .message.disapproved .text {
       border-color: red;
@@ -149,9 +157,25 @@
     polymer-ui-collapsible.message[active] .header {
       padding-bottom: 5px;
     }
+    .tryresult-container {
+      display: flex;
+    }
+    .tryresult {
+      margin: 0 3px;
+      border: 1px solid;
+      border-radius: 3px;
+      min-width: 1em;
+      height: 1em;
+      text-decoration: none;
+    }
+    .tryresult.result0,
     .message.approved .header {
       background-color: #dfd;
     }
+    .tryresult.result1 {
+      background-color: lightorange;
+    }
+    .tryresult.result2,
     .message.disapproved .header {
       background-color: #fdd;
     }
@@ -213,6 +237,11 @@
             <polymer-ui-collapsible>
               <div class="polymer-ui-collapsible-header">
                 <div class="patchset-title">{{ changelist.message ? changelist.message : 'Patch' }}</div>
+                <div class="tryresult-container">
+                  <template repeat="{{ tryresult in changelist.try_job_results }}">
+                    <a href="{{ tryresult.url }}" title="{{ tryresult.builder }}" class="tryresult result{{ tryresult.result }}">&nbsp;</a>
+                  </template>
+                </div>
                 <div class="date">{{ changelist.created }}</div>
                 <a href="https://codereview.chromium.org/download/issue{{ number }}_{{ changelist.patchset }}.diff" target="_blank" on-tap="stopPropagation">Raw diff</a>
               </div>
