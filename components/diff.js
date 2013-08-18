@@ -24,7 +24,7 @@ var diff = (function() {
   }
 
   function trimLine(type, line) {
-    if (type == 'add' || type == 'remove')
+    if (type == 'add' || type == 'remove' || type == 'both')
       return line.slice(1);
     return line;
   }
