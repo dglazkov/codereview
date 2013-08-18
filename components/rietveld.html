@@ -161,7 +161,7 @@
           </div>
           <div class="title">
             <span class="subject">{{ data.subject }}</span>
-            <span class="owner">&lt;<a class="email" href="{{ data.owner_email }}">{{ data.owner_email }}</a>&gt;</span>
+            <span class="owner">&lt;<a class="email" href="mailto:{{ data.owner_email }}">{{ data.owner_email }}</a>&gt;</span>
           </div>
           <rietveld-linkified class="description" value="{{ data.description }}"></rietveld-linkified>
           <div class="recipients">
@@ -534,7 +534,9 @@
         chunks.push({is_link: false, text: textBeforeLink});
       }
       var href = chunk;
-      if (!text.match(/[^:]+:\/\//))
+      if (text.match(/[^:]+@/))
+        href = 'mailto:' + href;
+      else if (!text.match(/[^:]+:\/\//))
         href = 'http://' + href;
       chunks.push({is_link: true, text: chunk, href: href});
       currentIndex = index + chunk.length;
