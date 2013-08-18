@@ -60,11 +60,16 @@
       border-top-right-radius: 5px;
       background-color: #E5ECF9;
       padding: 5px 10px 10px;
+      /* Match the builting polymer-ui-collapsible animation time. */
+      -webkit-transition: padding 0.2s;
+    }
+    .patchsets polymer-ui-collapsible[active] .polymer-ui-collapsible-header {
+      padding-bottom: 5px;
     }
     .patchsets .polymer-ui-collapsible-header .patchset-title {
       flex: 1
     }
-    .patchsets polymer-ui-collapsible:last-child:not([active=true]) .polymer-ui-collapsible-header {
+    .patchsets polymer-ui-collapsible:last-child:not([active]) .polymer-ui-collapsible-header {
       border-bottom: 1px solid #93b7fa;
       padding-bottom: 5px;
     }
@@ -113,6 +118,11 @@
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
       margin-top: -5px;
+      /* Match the builting polymer-ui-collapsible animation time. */
+      -webkit-transition: padding 0.2s;
+    }
+    polymer-ui-collapsible.message[active] .header {
+      padding-bottom: 5px;
     }
     .message.approved .header {
       background-color: #dfd;
