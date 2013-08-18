@@ -176,7 +176,7 @@
               </div>
               <div class="content" on-tap="stopPropagation">
                 <rietveld-patchset server="{{ server }}" issue="{{ number }}" patchset="{{ changelist.patchset }}"
-                                   diffmode="{{ diffmode ? 'unified' : 'side-by-side' }}"></rietveld-patchset>
+                                   diffmode="{{ diffmode ? 'unified' : 'side-by-side' }}" baseurl="{{ data.base_url }}"></rietveld-patchset>
               </div>
             </polymer-ui-collapsible>
           </template>
@@ -268,7 +268,7 @@
   })();
   </script>
 </polymer-element>
-<polymer-element name="rietveld-patchset" attributes="server issue patchset diffmode">
+<polymer-element name="rietveld-patchset" attributes="server issue patchset diffmode baseurl">
   <template>
     <template if="{{ issue &amp;&amp; patchset }}">
       <polymer-ajax
@@ -279,26 +279,35 @@
       </polymer-ajax>
     </template>
     <template if="{{ diff }}">
-      <rietveld-diffview diff="{{ diff }}" mode="{{ diffmode }}"></rietveld-diffview>
+      <rietveld-diffview diff="{{ diff }}" mode="{{ diffmode }}" baseurl="{{ baseurl }}"></rietveld-diffview>
     </template>
   </template>
   <script>
+  (function() {
+  function transformBaseUrl(url) {
+    // FIXME: Is there a less hacky way to do this?
+    return url.replace("svn://svn.chromium.org", "http://src.chromium.org/viewvc");
+  }
+
   Polymer('rietveld-patchset', {
     server: '',
     issue: '',
     patchset: '',
     diffmode: '',
     diff: null,
+    baseurl: '',
     diffLoadSucceeded: function(event) {
       this.diff = event.detail.response;
+      this.baseurl = transformBaseUrl(this.baseurl);
     },
     diffLoadFailed: function(event) {
       this.diff = null;
     },
   });
+  })();
   </script>
 </polymer-element>
-<polymer-element name="rietveld-diffview" attributes="diff mode">
+<polymer-element name="rietveld-diffview" attributes="diff mode baseurl">
   <template>
     <style>
     @host {
@@ -312,8 +321,13 @@
        0%   { -webkit-transform: translateX(0); }
        100% { -webkit-transform: translateX(100%); }
     }
-    .name {
+    .file-title {
+      display: flex;
+      padding: 2px;
       background-color: #f0f0f8;
+    }
+    .name {
+      flex: 1;
     }
     #diff {
       overflow-x: hidden;
@@ -408,7 +422,10 @@
     <div id="diff" on-webkitAnimationEnd="onAnimationEnd">
       <template repeat="{{ file in data }}">
         <polymer-ui-collapsible class="file-diff">
-          <div class="name text polymer-ui-collapsible-header">{{ file.name }}</div>
+          <div class="file-title polymer-ui-collapsible-header">
+            <div class="name">{{ file.name }}</div>
+            <a href="{{ baseurl }}/{{ file.name }}" target="_blank" on-tap="stopPropagation">View file</a>
+          </div>
           <div class="content">
             <template repeat="{{ group in file.groups }}">
               <div class="group">
@@ -468,6 +485,10 @@
           element.active = true;
         });
       }.bind(this), 0);
+    },
+
+    stopPropagation: function(event) {
+      event.stopPropagation();
     },
   });
   </script>
