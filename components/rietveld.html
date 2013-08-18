@@ -533,7 +533,10 @@
         var textBeforeLink = text.substring(currentIndex, index);
         chunks.push({is_link: false, text: textBeforeLink});
       }
-      chunks.push({is_link: true, text: chunk, href: chunk});
+      var href = chunk;
+      if (!text.match(/[^:]+:\/\//))
+        href = 'http://' + href;
+      chunks.push({is_link: true, text: chunk, href: href});
       currentIndex = index + chunk.length;
     })
     if (currentIndex < text.length) {
