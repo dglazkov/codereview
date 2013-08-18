@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <link rel="import" href="../third_party/polymer-all/polymer-elements/polymer-ajax/polymer-ajax.html">
+<link rel="import" href="../third_party/polymer-all/polymer-elements/polymer-localstorage/polymer-localstorage.html">
 <link rel="import" href="../third_party/polymer-all/polymer-ui-elements/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
 <link rel="import" href="../third_party/polymer-all/polymer-ui-elements/polymer-ui-collapsible/polymer-ui-collapsible.html">
 <link rel="import" href="../third_party/polymer-all/polymer-ui-elements/polymer-ui-accordion/polymer-ui-accordion.html">
@@ -140,7 +141,8 @@
             <polymer-ui-toggle-button onCaption="Closed" offCaption="Open" value="{{ data.closed }}"></polymer-ui-toggle-button>
             <polymer-ui-toggle-button onCaption="CQ+" offCaption="CQ-" value="{{ data.commit }}"></polymer-ui-toggle-button>
             <polymer-ui-toggle-button onCaption="Private" offCaption="Public" value="{{ data.private }}"></polymer-ui-toggle-button>
-            <polymer-ui-toggle-button onCaption="SxS" offCaption="Unified" value="{{ diffmode }}"></polymer-ui-toggle-button>
+            <polymer-ui-toggle-button onCaption="Unified" offCaption="SxS" value="{{ diffmode }}"></polymer-ui-toggle-button>
+            <polymer-localstorage name="diffmode" value="{{ diffmode }}"></polymer-localstorage>
           </div>
           <div class="title">
             <span class="subject">{{ data.subject }}</span>
