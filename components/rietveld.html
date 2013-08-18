@@ -75,6 +75,7 @@
     }
     .description {
       white-space: pre-wrap;
+      word-break: break-all;
     }
     .controls {
       display: flex;
@@ -98,6 +99,7 @@
     }
     .title-and-description {
       flex: 1;
+      margin-right: 10px;
     }
     .subject{
       font-weight: bold;
@@ -116,7 +118,7 @@
     .reviewers input,
     .cc input {
       flex: 1;
-      margin-left: 5px;
+      margin: 0 0 0 5px;
     }
     .message.approved .header,
     .message.approved .text {
@@ -153,6 +155,7 @@
     .message .text {
       padding: 10px;
       white-space: pre-wrap;
+      word-break: break-all;
       overflow: hidden;
       border-left: 1px solid #ccc;
       border-right: 1px solid #ccc;
