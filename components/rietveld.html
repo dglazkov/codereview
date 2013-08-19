@@ -239,7 +239,8 @@
                 <div class="patchset-title">{{ changelist.message ? changelist.message : 'Patch' }}</div>
                 <div class="tryresult-container">
                   <template repeat="{{ tryresult in changelist.try_job_results }}">
-                    <a href="{{ tryresult.url }}" title="{{ tryresult.builder }}" class="tryresult result{{ tryresult.result }}">&nbsp;</a>
+                    <a href="{{ tryresult.url }}" title="{{ tryresult.builder }}" class="tryresult result{{ tryresult.result }}"
+                       on-tap="stopPropagation" target="_blank">&nbsp;</a>
                   </template>
                 </div>
                 <div class="date">{{ changelist.created }}</div>
