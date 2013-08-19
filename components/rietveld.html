@@ -619,13 +619,20 @@
       var bugs = chunk.split('=')[1].split(',');
       chunks.push({is_link: false, text: "BUG="});
       bugs.forEach(function(bug) {
-        var bugParts = bug.match(/([^\d]*)(\d+)([^\d]*)/)
+        var bugParts = bug.match(/([^\d]*)(\d+)([^\d]*)/);
+        if (!bugParts) {
+          chunks.push({is_link: false, text: bug});
+          return;
+        }
         if (bugParts[1])
           chunks.push({is_link: false, text: bugParts[1]});
         chunks.push({is_link: true, text: bugParts[2], href: "http://code.google.com/p/chromium/issues/detail?id=" + bugParts[2]});
         if (bugParts[3])
           chunks.push({is_link: false, text: bugParts[3]});
+        chunks.push({is_link: false, text: ","});
       });
+      if (chunks[chunks.length - 1].text == ',')
+        chunks.pop();
       currentIndex = index + chunk.length;
     });
     if (currentIndex < text.length)
