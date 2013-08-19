@@ -1,9 +1,17 @@
 var diff = (function() {
   var kFileHeaderBegin = 'Index: ';
   var kFileHeaderEnd = '+++ ';
+  var kBinaryFileHeaderEnd = 'Binary files ';
+  var kPngSuffix = '.png';
 
   function startsWith(string, text) {
     return string.slice(0, text.length) == text;
+  }
+
+  function endsWith(string, text) {
+    if (string.length < text.length)
+      return false;
+    return string.slice(string.length - text.length) == text;
   }
 
   function classifyLine(line) {
@@ -98,11 +106,12 @@ var diff = (function() {
   Parser.prototype.parseHeader = function() {
     while (this.haveLines()) {
       var line = this.takeLine();
-      if (startsWith(line, kFileHeaderEnd)) {
-        return;
-      }
+      if (startsWith(line, kFileHeaderEnd))
+        return false;
+      if (startsWith(line, kBinaryFileHeaderEnd))
+        return true;
     }
-    throw 'Parse error: Filed to find "' + kHeaderStop + '"';
+    throw 'Parse error: Failed to find "' + kFileHeaderEnd + ' or ' + kBinaryFileHeaderEnd + '"';
   };
 
   Parser.prototype.parse = function() {
@@ -112,9 +121,10 @@ var diff = (function() {
       if (!startsWith(line, kFileHeaderBegin))
         continue;
       var name = line.slice(kFileHeaderBegin.length);
-      this.parseHeader();
+      is_binary = this.parseHeader();
       files.push({
         name: name,
+        is_image: is_binary && endsWith(name, kPngSuffix),
         groups: this.parseFile(),
       })
     }

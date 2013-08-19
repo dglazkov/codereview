@@ -248,7 +248,8 @@
               </div>
               <div class="content" on-tap="stopPropagation">
                 <rietveld-patchset server="{{ server }}" issue="{{ number }}" patchset="{{ changelist.patchset }}"
-                                   diffmode="{{ diffmode ? 'unified' : 'side-by-side' }}" baseurl="{{ data.base_url }}"></rietveld-patchset>
+                                   diffmode="{{ diffmode ? 'unified' : 'side-by-side' }}" baseurl="{{ data.base_url }}"
+                                   filedata="{{ changelist.files }}"></rietveld-patchset>
               </div>
             </polymer-ui-collapsible>
           </template>
@@ -341,7 +342,7 @@
   })();
   </script>
 </polymer-element>
-<polymer-element name="rietveld-patchset" attributes="server issue patchset diffmode baseurl">
+<polymer-element name="rietveld-patchset" attributes="server issue patchset diffmode baseurl filedata">
   <template>
     <template if="{{ issue &amp;&amp; patchset }}">
       <polymer-ajax
@@ -352,7 +353,8 @@
       </polymer-ajax>
     </template>
     <template if="{{ diff }}">
-      <rietveld-diffview diff="{{ diff }}" mode="{{ diffmode }}" baseurl="{{ baseurl }}"></rietveld-diffview>
+      <rietveld-diffview diff="{{ diff }}" mode="{{ diffmode }}" baseurl="{{ baseurl }}" filedata="{{ filedata }}"
+                         patchset="{{ patchset }}" issue="{{ issue }}"></rietveld-diffview>
     </template>
   </template>
   <script>
@@ -380,7 +382,7 @@
   })();
   </script>
 </polymer-element>
-<polymer-element name="rietveld-diffview" attributes="diff mode baseurl">
+<polymer-element name="rietveld-diffview" attributes="diff mode baseurl filedata patchset issue">
   <template>
     <style>
     @host {
@@ -500,7 +502,26 @@
             <a href="{{ baseurl }}/{{ file.name }}" target="_blank" on-tap="stopPropagation">View file</a>
           </div>
           <div class="content">
-            <template repeat="{{ group in file.groups }}">
+            <template if="{{ file.is_image }}">
+              <div class="group image">
+                <!-- FIXME: Add UI to show which is before and which is after and to handle add/removes of files. -->
+                <div class="left">
+                  <div class="line remove">
+                    <img src="https://codereview.chromium.org/{{ issue }}/image/{{ patchset }}/{{ file.id }}/0">
+                  </div>
+                  <div class="line add">
+                    <img src="https://codereview.chromium.org/{{ issue }}/image/{{ patchset }}/{{ file.id }}/1">
+                  </div>
+                </div>
+                <div class="right">
+                  <div class="line add">
+                    <img src="https://codereview.chromium.org/{{ issue }}/image/{{ patchset }}/{{ file.id }}/1">
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <template if="{{ !file.is_image }}" repeat="{{ group in file.groups }}">
               <div class="group">
                 <div class="left">
                   <template repeat="{{ line in group }}">
@@ -551,6 +572,9 @@
 
     diffChanged: function() {
       this.data = diff.parse(this.diff);
+      this.data.forEach(function(file) {
+        file.id = this.filedata[file.name].id;
+      }.bind(this));
       // This is gross, but we can't set active="true" in markup
       // https://github.com/Polymer/polymer-ui-elements/issues/11
       setTimeout(function() {
