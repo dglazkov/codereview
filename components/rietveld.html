@@ -494,7 +494,7 @@
       display: none;
     }
     </style>
-    <div id="diff" on-webkitAnimationEnd="onAnimationEnd">
+    <div id="diff">
       <template repeat="{{ file in data }}">
         <polymer-ui-collapsible class="file-diff">
           <div class="file-title polymer-ui-collapsible-header">
@@ -555,7 +555,9 @@
     mode: '',
 
     onAnimationEnd: function() {
-      this.$.diff.classList.remove('animating');
+      var diff = this.$.diff;
+      diff.classList.remove('animating');
+      diff.removeEventListener('webkitAnimationEnd', this.boundAnimationEnd);
     },
 
     modeChanged: function(oldValue) {
@@ -566,8 +568,12 @@
       else
         classList.add('unified');
 
-      if (oldValue)
+      if (oldValue) {
         classList.add('animating');
+        if (!this.boundAnimationEnd)
+          this.boundAnimationEnd = this.onAnimationEnd.bind(this);
+        this.$.diff.addEventListener('webkitAnimationEnd', this.boundAnimationEnd);
+      }
     },
 
     diffChanged: function() {
