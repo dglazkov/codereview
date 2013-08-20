@@ -366,21 +366,19 @@
 <polymer-element name="rietveld-patchset" attributes="server issue patchset diffmode baseurl filedata">
   <template>
     <template if="{{ issue &amp;&amp; patchset }}">
-      <polymer-ajax
+      <polymer-ajax auto
           url="{{ server }}/download/issue{{ issue }}_{{ patchset }}.diff"
-          auto
-          on-polymer-response="diffLoadSucceeded"
-          on-polymer-error="diffLoadFailed">
+          response="{{ diff }}">
       </polymer-ajax>
     </template>
     <template if="{{ diff }}">
-      <rietveld-diffview diff="{{ diff }}" mode="{{ diffmode }}" baseurl="{{ baseurl }}" filedata="{{ filedata }}"
+      <rietveld-diffview diff="{{ diff }}" mode="{{ diffmode }}" viewurl="{{ viewurl }}" filedata="{{ filedata }}"
                          patchset="{{ patchset }}" issue="{{ issue }}"></rietveld-diffview>
     </template>
   </template>
   <script>
   (function() {
-  function transformBaseUrl(url) {
+  function toViewURL(url) {
     // FIXME: Is there a less hacky way to do this?
     return url.replace("svn://svn.chromium.org", "http://src.chromium.org/viewvc");
   }
@@ -392,18 +390,15 @@
     diffmode: '',
     diff: null,
     baseurl: '',
-    diffLoadSucceeded: function(event) {
-      this.diff = event.detail.response;
-      this.baseurl = transformBaseUrl(this.baseurl);
-    },
-    diffLoadFailed: function(event) {
-      this.diff = null;
+    viewurl: '',
+    baseurlChanged: function() {
+      this.viewurl = toViewURL(this.baseurl);
     },
   });
   })();
   </script>
 </polymer-element>
-<polymer-element name="rietveld-diffview" attributes="diff mode baseurl filedata patchset issue">
+<polymer-element name="rietveld-diffview" attributes="diff mode viewurl filedata patchset issue">
   <template>
     <style>
     @host {
@@ -520,7 +515,7 @@
         <div class="file-diff" active="true">
           <div class="file-title polymer-ui-collapsible-header">
             <div class="name">{{ file.name }}</div>
-            <a href="{{ baseurl }}/{{ file.name }}" target="_blank" on-tap="stopPropagation">View file</a>
+            <a href="{{ viewurl }}/{{ file.name }}" target="_blank" on-tap="stopPropagation">View file</a>
           </div>
           <div class="content">
             <template if="{{ file.is_image }}">
