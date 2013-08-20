@@ -2,8 +2,6 @@
 <link rel="import" href="../third_party/polymer-elements/polymer-ajax/polymer-ajax.html">
 <link rel="import" href="../third_party/polymer-elements/polymer-localstorage/polymer-localstorage.html">
 <link rel="import" href="../third_party/polymer-ui-elements/polymer-ui-toggle-button/polymer-ui-toggle-button.html">
-<link rel="import" href="../third_party/polymer-ui-elements/polymer-ui-collapsible/polymer-ui-collapsible.html">
-<link rel="import" href="../third_party/polymer-ui-elements/polymer-ui-accordion/polymer-ui-accordion.html">
 <script src="diff.js"></script>
 <polymer-element name="rietveld-app" attributes="server">
   <template>
@@ -243,7 +241,7 @@
             </div>
           </div>
         </div>
-        <polymer-ui-accordion multi class="patchsets">
+        <div class="patchsets">
           <template repeat="{{ patchset in data.patchsets }}">
             <polymer-ajax
                 auto
@@ -253,7 +251,7 @@
             </polymer-ajax>
           </template>
           <template repeat="{{ changelist in changelists }}">
-            <polymer-ui-collapsible>
+            <div>
               <div class="polymer-ui-collapsible-header">
                 <div class="patchset-title">{{ changelist.message ? changelist.message : 'Patch' }}</div>
                 <template repeat="{{ tryresult in changelist.try_job_results }}">
@@ -274,12 +272,12 @@
                                    diffmode="{{ diffmode ? 'unified' : 'side-by-side' }}" baseurl="{{ data.base_url }}"
                                    filedata="{{ changelist.files }}"></rietveld-patchset>
               </div>
-            </polymer-ui-collapsible>
+            </div>
           </template>
-        </polymer-ui-accordion>
+        </div>
         <div class="messages">
           <template repeat="{{ message in data.messages }}">
-            <polymer-ui-collapsible active=true class="message {{ message.approval ? 'approved' : ''}} {{ message.disapproval ? 'disapproved' : '' }}">
+            <polymer-ui-collapsible active="true" class="message {{ message.approval ? 'approved' : ''}} {{ message.disapproval ? 'disapproved' : '' }}">
               <div class="polymer-ui-collapsible-header header">
                 <div class="sender">{{ message.sender }}</div>
                 <div class="date">{{ message.date }}</div>
@@ -519,7 +517,7 @@
     </style>
     <div id="diff">
       <template repeat="{{ file in data }}">
-        <polymer-ui-collapsible class="file-diff">
+        <div class="file-diff" active="true">
           <div class="file-title polymer-ui-collapsible-header">
             <div class="name">{{ file.name }}</div>
             <a href="{{ baseurl }}/{{ file.name }}" target="_blank" on-tap="stopPropagation">View file</a>
@@ -559,7 +557,7 @@
               ></div
             ></template>
           </div>
-        </polymer-ui-collapsible>
+        </div>
       </template>
     </div>
   </template>
@@ -596,13 +594,6 @@
       this.data.forEach(function(file) {
         file.id = this.filedata[file.name].id;
       }.bind(this));
-      // This is gross, but we can't set active="true" in markup
-      // https://github.com/Polymer/polymer-ui-elements/issues/11
-      setTimeout(function() {
-        Array.prototype.forEach.call(this.$.diff.querySelectorAll('.file-diff'), function(element) {
-          element.active = true;
-        });
-      }.bind(this), 0);
     },
 
     stopPropagation: function(event) {
