@@ -6,6 +6,8 @@ all:
 deps:
 	@git submodule init
 	@git submodule update --recursive
+	@git submodule foreach git submodule init
+	@git submodule update --recursive
 	@echo "Done!"
 
 pull-deps: deps
