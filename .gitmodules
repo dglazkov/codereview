@@ -1,56 +1,56 @@
 [submodule "projects"]
-	path = projects
+	path = third_party/projects
 	url = https://github.com/Polymer/projects.git
 [submodule "toolkit-ui"]
-	path = toolkit-ui
+	path = third_party/toolkit-ui
 	url = https://github.com/Polymer/toolkit-ui.git
 [submodule "polymer-ui-elements"]
-	path = polymer-ui-elements
+	path = third_party/polymer-ui-elements
 	url = https://github.com/Polymer/polymer-ui-elements
 [submodule "polymer-elements"]
-	path = polymer-elements
+	path = third_party/polymer-elements
 	url = https://github.com/Polymer/polymer-elements
 [submodule "more-elements"]
-	path = more-elements
+	path = third_party/more-elements
 	url = https://github.com/Polymer/more-elements.git
 	branch = master
 [submodule "polymer"]
-	path = polymer
+	path = third_party/polymer
 	url = https://github.com/Polymer/polymer.git
 [submodule "platform"]
-	path = platform
+	path = third_party/platform
 	url = https://github.com/Polymer/platform.git
 [submodule "CustomElements"]
-	path = CustomElements
+	path = third_party/CustomElements
 	url = https://github.com/Polymer/CustomElements.git
 [submodule "HTMLImports"]
-	path = HTMLImports
+	path = third_party/HTMLImports
 	url = https://github.com/Polymer/HTMLImports.git
 [submodule "ShadowDOM"]
-	path = ShadowDOM
+	path = third_party/ShadowDOM
 	url = https://github.com/Polymer/ShadowDOM.git
 [submodule "PointerGestures"]
-	path = PointerGestures
+	path = third_party/PointerGestures
 	url = https://github.com/Polymer/PointerGestures.git
 [submodule "PointerEvents"]
-	path = PointerEvents
+	path = third_party/PointerEvents
 	url = https://github.com/Polymer/PointerEvents.git
 [submodule "web-animations-js"]
-	path = web-animations-js
+	path = third_party/web-animations-js
 	url = https://github.com/web-animations/web-animations-js.git
 [submodule "observe-js"]
-	path = observe-js
+	path = third_party/observe-js
 	url = https://github.com/Polymer/observe-js.git
 	branch = master
 [submodule "polymer-expressions"]
-	path = polymer-expressions
+	path = third_party/polymer-expressions
 	url = https://github.com/Polymer/polymer-expressions.git
 	branch = master
 [submodule "NodeBind"]
-	path = NodeBind
+	path = third_party/NodeBind
 	url = https://github.com/Polymer/NodeBind.git
 	branch = master
 [submodule "TemplateBinding"]
-	path = TemplateBinding
+	path = third_party/TemplateBinding
 	url = https://github.com/Polymer/TemplateBinding.git
 	branch = master
