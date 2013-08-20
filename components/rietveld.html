@@ -603,12 +603,12 @@
   </script>
 </polymer-element>
 <polymer-element name="rietveld-linkified" attributes="value">
-  <template><!--
-    --><template repeat="{{ chunk in chunks }}"><!--
-      --><template if="{{ chunk.is_link }}"><a href="{{ chunk.href }}">{{ chunk.text }}</a></template><!--
-      --><template if="{{ !chunk.is_link }}">{{ chunk.text }}</template><!--
-    --></template><!--
-  --></template>
+  <template
+    ><template repeat="{{ chunk in chunks }}"
+      ><template if="{{ chunk.is_link }}"><a href="{{ chunk.href }}">{{ chunk.text }}</a></template
+      ><template if="{{ !chunk.is_link }}">{{ chunk.text }}</template
+    ></template
+  ></template>
   <script>
   (function() {
   // FIXME: This could use some unittesting.
