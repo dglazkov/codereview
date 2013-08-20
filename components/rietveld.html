@@ -129,18 +129,31 @@
       flex: 1;
       margin: 0 0 0 5px;
     }
+    /* Try result values:
+      -1: In progress
+      0: Pass
+      1: Warning
+      2: Fail
+      6: Not started.
+    */
+    .tryresult.result-1 {
+      border-color: #B9B900;
+    }
     .tryresult.result0,
     .message.approved .header,
     .message.approved .text {
       border-color: #8d8;
     }
     .tryresult.result1 {
-      background-color: orange;
+      border-color: orange;
     }
     .tryresult.result2,
     .message.disapproved .header,
     .message.disapproved .text {
       border-color: red;
+    }
+    .tryresult.result6 {
+      border-color: grey;
     }
     .message .header {
       display: flex;
@@ -168,6 +181,9 @@
       height: 1em;
       text-decoration: none;
     }
+    .tryresult.result-1 {
+      background-color: #FFFFA6;
+    }
     .tryresult.result0,
     .message.approved .header {
       background-color: #dfd;
@@ -178,6 +194,9 @@
     .tryresult.result2,
     .message.disapproved .header {
       background-color: #fdd;
+    }
+    .tryresult.result6 {
+      background-color: #eee;
     }
     .message .sender {
       flex: 1;
