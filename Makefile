@@ -3,13 +3,8 @@
 all:
 	@echo "Run 'make deps' to download dependencies."
 
-third_party/polymer-all:
-	cd third_party && git clone git://github.com/Polymer/polymer-all.git -b master --recursive
-
-third_party/Promises:
-	cd third_party && git clone https://github.com/slightlyoff/Promises.git
-
-deps: third_party/polymer-all third_party/Promises
+deps:
+	cd third_party && git submodules update
 	@echo "Done!"
 
 serve:
@@ -17,6 +12,3 @@ serve:
 
 deploy:
 	@../google_appengine/appcfg.py update .
-
-clean:
-	rm -rf third_party/polymer-all third_party/Promises
