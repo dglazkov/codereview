@@ -344,7 +344,7 @@
 
       response.messages.forEach(function(message) {
         message.date = humanReadableDate(message.date, 24 * MS_IN_HOUR);
-      });
+      }, this);
 
       this.data = response;
       this.error = '';
@@ -404,14 +404,6 @@
     @host {
       * { display: block; }
     }
-    @-webkit-keyframes slide-in {
-       0%   { -webkit-transform: translateX(100%); }
-       100% { -webkit-transform: translateX(0); }
-    }
-    @-webkit-keyframes slide-out {
-       0%   { -webkit-transform: translateX(0); }
-       100% { -webkit-transform: translateX(100%); }
-    }
     .file-title {
       display: flex;
       padding: 2px;
@@ -427,40 +419,19 @@
     .group {
       display: flex;
     }
-    #diff.animating:not(.unified) .right {
-      -webkit-animation-name: slide-in;
-      -webkit-animation-duration: 0.1s;
-      -webkit-animation-timing-function: ease-in-out;
-      -webkit-transform: translateX(0);
-    }
-    #diff.animating.unified .right {
-      -webkit-animation-name: slide-out;
-      -webkit-animation-duration: 0.1s;
-      -webkit-animation-timing-function: ease-in-out;
-      -webkit-transform: translateX(100%);
-    }
-    #diff.animating .left,
-    #diff.animating .right {
-      flex-shrink: 0;
-      width: 50%;
-    }
     #diff:not(.unified) .left,
     #diff:not(.unified) .right {
       flex-shrink: 0;
       width: 50%;
     }
-    #diff.animating .left  .add,
-    #diff.animating .right .remove {
-      display: none;
-    }
     #diff:not(.unified) .left  .add,
     #diff:not(.unified) .right .remove {
       display: none;
     }
-    #diff:not(.animating).unified .left {
+    #diff.unified .left {
       flex: 1;
     }
-    #diff:not(.animating).unified .right {
+    #diff.unified .right {
       display: none;
     }
     .line {
@@ -512,7 +483,7 @@
     </style>
     <div id="diff">
       <template repeat="{{ file in data }}">
-        <div class="file-diff" active="true">
+        <div class="file-diff">
           <div class="file-title polymer-ui-collapsible-header">
             <div class="name">{{ file.name }}</div>
             <a href="{{ viewurl }}/{{ file.name }}" target="_blank" on-tap="stopPropagation">View file</a>
@@ -562,33 +533,19 @@
     data: null,
     mode: '',
 
-    onAnimationEnd: function() {
-      var diff = this.$.diff;
-      diff.classList.remove('animating');
-      diff.removeEventListener('webkitAnimationEnd', this.boundAnimationEnd);
-    },
-
-    modeChanged: function(oldValue) {
+    modeChanged: function() {
       var classList = this.$.diff.classList;
-
       if (this.mode == 'side-by-side')
         classList.remove('unified');
       else
         classList.add('unified');
-
-      if (oldValue) {
-        classList.add('animating');
-        if (!this.boundAnimationEnd)
-          this.boundAnimationEnd = this.onAnimationEnd.bind(this);
-        this.$.diff.addEventListener('webkitAnimationEnd', this.boundAnimationEnd);
-      }
     },
 
     diffChanged: function() {
       this.data = diff.parse(this.diff);
       this.data.forEach(function(file) {
         file.id = this.filedata[file.name].id;
-      }.bind(this));
+      }, this);
     },
 
     stopPropagation: function(event) {
