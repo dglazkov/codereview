@@ -1,0 +1,56 @@
+[submodule "projects"]
+	path = projects
+	url = https://github.com/Polymer/projects.git
+[submodule "toolkit-ui"]
+	path = toolkit-ui
+	url = https://github.com/Polymer/toolkit-ui.git
+[submodule "polymer-ui-elements"]
+	path = polymer-ui-elements
+	url = https://github.com/Polymer/polymer-ui-elements
+[submodule "polymer-elements"]
+	path = polymer-elements
+	url = https://github.com/Polymer/polymer-elements
+[submodule "more-elements"]
+	path = more-elements
+	url = https://github.com/Polymer/more-elements.git
+	branch = master
+[submodule "polymer"]
+	path = polymer
+	url = https://github.com/Polymer/polymer.git
+[submodule "platform"]
+	path = platform
+	url = https://github.com/Polymer/platform.git
+[submodule "CustomElements"]
+	path = CustomElements
+	url = https://github.com/Polymer/CustomElements.git
+[submodule "HTMLImports"]
+	path = HTMLImports
+	url = https://github.com/Polymer/HTMLImports.git
+[submodule "ShadowDOM"]
+	path = ShadowDOM
+	url = https://github.com/Polymer/ShadowDOM.git
+[submodule "PointerGestures"]
+	path = PointerGestures
+	url = https://github.com/Polymer/PointerGestures.git
+[submodule "PointerEvents"]
+	path = PointerEvents
+	url = https://github.com/Polymer/PointerEvents.git
+[submodule "web-animations-js"]
+	path = web-animations-js
+	url = https://github.com/web-animations/web-animations-js.git
+[submodule "observe-js"]
+	path = observe-js
+	url = https://github.com/Polymer/observe-js.git
+	branch = master
+[submodule "polymer-expressions"]
+	path = polymer-expressions
+	url = https://github.com/Polymer/polymer-expressions.git
+	branch = master
+[submodule "NodeBind"]
+	path = NodeBind
+	url = https://github.com/Polymer/NodeBind.git
+	branch = master
+[submodule "TemplateBinding"]
+	path = TemplateBinding
+	url = https://github.com/Polymer/TemplateBinding.git
+	branch = master
