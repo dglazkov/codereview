@@ -520,29 +520,21 @@
                 </div>
               </div>
             </template>
-
-            <template if="{{ !file.is_image }}" repeat="{{ group in file.groups }}">
-              <div class="group">
-                <div class="left">
-                  <template repeat="{{ line in group }}">
-                    <div class="line {{ line.type }}"><!--
-                    --><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp;' }}</div><!--
-                    --><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp;' }}</div><!--
-                    --><div class="text">{{ line.text }}</div><!--
-                  --></div>
-                  </template>
-                </div>
-                <div class="right">
-                  <template repeat="{{ line in group }}">
-                    <div class="line {{ line.type }}"><!--
-                    --><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp;' }}</div><!--
-                    --><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp;' }}</div><!--
-                    --><div class="text">{{ line.text }}</div><!--
-                  --></div>
-                  </template>
-                </div>
-              </div>
-            </template>
+            <template if="{{ !file.is_image }}" repeat="{{ group in file.groups }}"
+              ><div class="group"><div class="left"
+                ><template repeat="{{ line in group }}"><div class="line {{ line.type }}"
+                  ><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp;' }}</div
+                  ><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp;' }}</div
+                  ><div class="text">{{ line.text }}</div
+                ></div></template>
+              </div><div class="right"
+                ><template repeat="{{ line in group }}"><div class="line {{ line.type }}"
+                  ><div class="before">{{ line.beforeNumber ? line.beforeNumber : '&nbsp;' }}</div
+                  ><div class="after">{{ line.afterNumber ? line.afterNumber : '&nbsp;' }}</div
+                  ><div class="text">{{ line.text }}</div
+                ></div></template></div
+              ></div
+            ></template>
           </div>
         </polymer-ui-collapsible>
       </template>
