@@ -4,7 +4,8 @@ all:
 	@echo "Run 'make deps' to download dependencies."
 
 deps:
-	cd third_party && git submodules update
+	@git submodule init
+	@git submodule update --recursive
 	@echo "Done!"
 
 serve:
