@@ -276,15 +276,15 @@
           </template>
         </div>
         <div class="messages">
-          <template repeat="{{ message in data.messages }}">
-            <polymer-ui-collapsible active="true" class="message {{ message.approval ? 'approved' : ''}} {{ message.disapproval ? 'disapproved' : '' }}">
-              <div class="polymer-ui-collapsible-header header">
-                <div class="sender">{{ message.sender }}</div>
-                <div class="date">{{ message.date }}</div>
-              </div>
-              <div class="text"><rietveld-linkified value="{{ message.text }}"></rietveld-linkified></div>
-            </polymer-ui-collapsible>
-          </template>
+          <template repeat="{{ message in data.messages }}"
+            ><div active="true" class="message {{ message.approval ? 'approved' : ''}} {{ message.disapproval ? 'disapproved' : '' }}"
+              ><div class="polymer-ui-collapsible-header header"
+                ><div class="sender">{{ message.sender }}</div
+                ><div class="date">{{ message.date }}</div
+              ></div
+              ><div class="text"><rietveld-linkified value="{{ message.text }}"></rietveld-linkified></div
+            ></div
+          ></template>
         </div>
       </div>
     </template>
@@ -306,7 +306,7 @@
 
   function humanReadableDate(date, minTime) {
     var parsedDate = Date.parse(date + " UTC");
-    var diff = Date.now() - parsedDate;
+    var diff = new Date() - parsedDate;
     if (diff > minTime)
       return new Date(parsedDate).toLocaleDateString();
 
